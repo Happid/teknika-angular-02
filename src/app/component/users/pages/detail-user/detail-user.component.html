@@ -1,0 +1,102 @@
+<ng-container *ngIf="toasterConfig.isShow">
+    <app-toaster [toasterConfig]="toasterConfig"></app-toaster>
+</ng-container>
+
+<nav class="flex justify-start mb-5 bg-gray-50 px-3 py-3" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+        <li>
+            <div class="flex items-center">
+            <a class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">
+                User Pages
+            </a>
+            </div>
+        </li>
+        <li aria-current="page">
+            <div class="flex items-center">
+            <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+            </svg>
+            <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">
+              <ng-container *ngIf="userIdFromRoute != 0">Detail User</ng-container>
+              <ng-container *ngIf="userIdFromRoute == 0">Tambah User</ng-container>
+            </span>
+            </div>
+        </li>
+    </ol>
+</nav>
+<section class="bg-white dark:bg-gray-900">
+  <app-spinner [loading]="loading"></app-spinner>
+  <div *ngIf="!loading" class="max-w-4xl px-4 py-8 mx-auto lg:py-16">
+      <form [formGroup]="form">
+          <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
+              <div class="relative z-0 w-full mb-5 group">
+                <input type="text" name="fullName" id="fullName" formControlName="name"
+                class="focus:border-blue-600 block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 peer" placeholder=" " required 
+                [ngClass]="{'focus:border-red-600': form.controls.name.errors?.required}"/>
+                
+                <label for="fullName" class="peer-focus:text-blue-600 peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 "
+                [ngClass]="{'peer-focus:text-red-600': form.controls.name.errors?.required}">
+                  Full Name
+                </label>
+                <div class="text-red-600 text-xs" *ngIf="form.controls.name.errors?.required">
+                  Full Name is required.
+                </div>
+              </div>
+              <div class="relative z-0 w-full mb-5 group">
+                <input type="email" name="floating_email" id="floating_email" formControlName="email"
+                class="focus:border-blue-600 block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 peer" placeholder=" " required 
+                [ngClass]="{'focus:border-red-600': form.controls.email.errors?.required}"/>
+
+                <label for="floating_email" class="peer-focus:text-blue-600 peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                [ngClass]="{'peer-focus:text-red-600': form.controls.email.errors?.required}">
+                  Email address
+                </label>
+                <div class="text-red-600 text-xs" *ngIf="form.controls.email.errors?.required">
+                  Email address is required.
+                </div>
+                <div class="text-red-600 text-xs" *ngIf="form.controls.email.errors?.email">
+                  Email address is invalid.
+                </div>
+              </div>
+              
+              <div class="sm:col-span-2">
+                  <div class="relative z-0 w-full mb-5 group">
+                    <textarea rows="4" name="body" id="body" formControlName="body"
+                    class="focus:border-blue-600 block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 peer" placeholder=" " required
+                    [ngClass]="{'focus:border-red-600': form.controls.body.errors?.required}"></textarea>
+
+                    <label for="body" class="peer-focus:text-blue-600 peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    [ngClass]="{'peer-focus:text-red-600': form.controls.body.errors?.required}">
+                      Comment
+                    </label>
+                    <div class="text-red-600 text-xs" *ngIf="form.controls.body.errors?.required">
+                      Comment address is required.
+                    </div>
+                  </div>
+              </div>
+          </div>
+          <div *ngIf="!isBtnSave" class="w-full bg-yellow-50 text-yellow-500 font-medium p-2 text-center my-2">
+              Mohon Tunggu Sebentar
+          </div>
+
+          <div class="flex justify-end items-center space-x-2">
+              <!-- Update Button  -->
+              <ng-container *ngIf="isBtnSave && userIdFromRoute != 0">
+                <app-button [buttonConfig]="buttonConfig" (btnTringger)="btnUpdate()"></app-button>
+              </ng-container>
+              
+              <!-- Create Button -->
+              <ng-container *ngIf="isBtnSave && userIdFromRoute == 0">
+                <app-button [buttonConfig]="buttonConfig" (btnTringger)="btnCreate()"></app-button>
+              </ng-container>
+
+              <button (click)="btnBack()" 
+              type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 me-2 mb-2">
+                  Kembali
+              </button>
+          </div>
+      </form>
+  </div>
+  
+</section>
+
